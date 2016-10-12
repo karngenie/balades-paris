@@ -27,6 +27,12 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
 
 https://help.github.com/articles/generating-an-ssh-key/
+
 https://git-scm.com/book/fr/v2/Les-bases-de-Git-D%C3%A9marrer-un-d%C3%A9p%C3%B4t-Git
+
 http://stackoverflow.com/questions/13340329/how-to-save-a-git-commit-message-from-windows-cmd
+
+https://github.com/karngenie/balades-paris
+
+https://git-for-windows.github.io/
 
