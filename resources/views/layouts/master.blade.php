@@ -80,11 +80,6 @@
     @yield('content')
 
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/all.js') }}"></script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHUOo8VLvsHwr7BMa3qxRuzJ3sR3q-1Kc&callback=initMap">
-    </script>
+
 </body>
 </html>

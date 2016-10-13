@@ -25,13 +25,8 @@
 				@endif
 				
 			@endforeach
-
-
-
-
 		</ul>
-
-
 	</section>
 </main>
+@include('layouts.loadscript')
 @endsection
