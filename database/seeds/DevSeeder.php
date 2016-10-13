@@ -127,7 +127,45 @@ class DevSeeder extends Seeder
 
 		}
 
+		DB::table('miams')->delete();
+		DB::table('miams_langs')->delete();
 
+		for($i = 1; $i < 25; ++$i)
+		{
+			DB::table('miams')->insert([
+				'id'=>$i,
+				'district_id' =>rand(1, 20),
+				'img'=>'http://static4.pagesjaunes.fr/media/cviv/55819639_N_0001_photo.jpg',
+				'show'=>1
+			]);
+
+			DB::table('miams_langs')->insert([
+				'miam_id'=>$i,
+				'lang_code' =>'fr',
+				'name'=>'resto'.$i,
+				'desc'=>'bolo bolo bolo bolo bolo',
+				'url'=>'http://www.google.fr'
+			]);
+		}
+
+		DB::table('miam_spot')->delete();
+		for($i = 1; $i < 25; ++$i)
+		{
+			if (rand(1, 2)==1)
+			{
+				$rnd=rand(1, 5);
+				for($j = 1; $j < $rnd; ++$j)
+				{
+					DB::table('miam_spot')->insert([
+						'miam_id'=>$i,
+						'spot_id' =>rand(1, 25)						
+					]);
+
+				}
+
+			}
+
+		}
 
     }
 }

@@ -17,6 +17,8 @@ $brand-warning: #cbb956;
 $brand-danger:  #bf5329;
 
 // Typography
+
+$icon-font-path: '../css/fonts/bootstrap/';
 $font-family-sans-serif: "Roboto", sans-serif;
 $font-size-base: 14px;
 $line-height-base: 1.6;
@@ -36,4 +38,5 @@ $input-color-placeholder: lighten($text-color, 30%);
 // Panels
 $panel-default-heading-bg: #fff;
 
+// met les gouttier à zero de marge
 $grid-gutter-width:0;

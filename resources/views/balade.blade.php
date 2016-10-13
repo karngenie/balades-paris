@@ -1,28 +1,283 @@
 @extends('layouts.master')
 
 @section('content')
+	<style>
 
+		html, body { height: 100%; margin: 0; padding: 0; }
+		body{background-color: #fcfcfc; height: 100%; font-family: 'Capriola', sans-serif; }
+
+		#map { height: 100%; }
+		
+		#mapContent{height: 200px;    width: 100%; }
+		.route{
+			margin-top: 200px
+			/*
+				padding-left: 30px;
+	    		padding-right: 10px;
+    		*/
+		}
+
+		.routeContent{
+			border-left: solid 2px black;
+			position: relative;
+		}
+		.routeContent ul {list-style-type: none; padding-left: 15px;padding-top: 25px}
+		.routeContent ul, .routeContent li {margin: 0; position: relative; }
+		.routeContent li {
+			
+			
+
+			margin-left: 15px;
+			margin-top: 15px;
+		}
+
+		.stepIcon{ 
+			position: absolute;
+			left: -58px; top: 15px; 
+			background-color: #457388;
+			border-radius: 50%; 
+			height: 50px; 
+			width: 50px;
+			box-shadow: 0 0 0 0px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 0px rgba(0, 0, 0, 0.05);
+	
+		}
+
+		.stepIcon .glyphicon{
+			text-align: center;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%,-50%);
+			color: #ffffff;
+		}
+
+
+		.route p{
+			margin: 0;
+			padding:0 15px 0 15px; 
+		}
+
+		.cardDetail{
+			position: relative;
+			margin: 0; 
+			min-height:80px;
+			background-color: #ffffff; 
+	
+			/*box-shadow: 2px 2px 0px 0 rgba(0,0,0,0.16),2px 2px 0px 0 rgba(0,0,0,0.12);*/
+			box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+		}
+
+
+		.arrow-left {
+		  width: 0; 
+		  height: 0; 
+		  border-top: 10px solid transparent;
+		  border-bottom: 10px solid transparent; 		  
+		  border-right:10px solid #ffffff; 
+		  position: absolute;
+		  left:15px;
+		  top:20px;
+		}
+/*
+		li:after {
+			display: block;
+			width: 0; 
+			height: 0; 
+			border-top: 10px solid transparent;
+			border-bottom: 10px solid transparent; 		  
+			border-right:10px solid #ffffff; 
+			position: absolute;
+			left:15px;
+			top:20px;
+			content: "";
+		}*/
+		.cardDetail .cardDetailImg {width: 100%}
+		.cardDetail h3 {margin: 5px 0 10px 0;
+		padding: 0 15px 0 15px}
+		.cardDetail .cardDetailDesc {padding: 5px}
+		.miamHeader span{ margin-left: 5px; margin-right: 5px;}
+
+
+		.miamList{display: none}
+
+
+		.miamDetail{			
+			overflow: hidden;
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+
+		.miamVisual{
+			height: 100px;
+			background-size: cover;
+		}
+
+		.thumbnail{
+			margin-bottom: 10px;
+			padding: 0;
+		}
+
+		.miamDetail h4 {
+			height: 36px;
+		}
+	@media (max-width: 767px) { 
+
+
+		.timeLineMobile{
+			position: absolute;
+			background-color: #000000;
+			width: 2px;
+			top: -55px;
+			bottom: 0;
+			left:50%;
+		    -webkit-transform: translate(-50%,0);
+		    -moz-transform: translate(-50%,0);
+		    -ms-transform: translate(-50%,0);
+		    -o-transform: translate(-50%,0);
+		    transform: translate(-50%,0);			
+
+		}	
+
+
+
+		.routeContent {
+		    border-left: solid 0;
+
+		   
+		}
+				
+
+		.routeContent li {
+		    margin-left: 0;
+		    margin-top: 55px;
+		}		
+
+
+		.routeContent ul {		    
+		    padding-left: 0;
+		    padding-top: 0;
+		   
+		}
+
+		.stepIcon {
+		   
+		    left: 50%;
+		    top: -28px;
+		    height: 30px;
+    		width: 30px;
+		    -webkit-transform: translate(-50%,-50%);
+		    -moz-transform: translate(-50%,-50%);
+		    -ms-transform: translate(-50%,-50%);
+		    -o-transform: translate(-50%,-50%);
+		    transform: translate(-50%,-50%);
+		}	
+
+
+	}
+
+
+
+
+	</style>
 
 <main class="">
 
+	<div class="row">
+		<section class=" container" style="position:fixed;top: 51px;right: 0;left: 0;z-index:99999;">		
+			<div  class="col-md-9 col-md-offset-1" >
+					<div id="mapContent" style="">
 
-	<section class="container walks">
 
-		<ul class="row">
+				 		<div id="map"></div>
+				 	
+				 	</div>
+			</div>
+		</section>
+	</div>	
 
 
-
-			@foreach ($listSpots as $spot)
-				{{$spot->name}}<br>
-
+<section class="route container" style="">
+	<div class="routeContent col-md-7 col-md-offset-2">
+		<div class="timeLineMobile"></div>
+			<ul>
+				@foreach ($listSpots as $spot)
 				
-			@endforeach		
+				<li class="cardDetail">
+					<div class="stepIcon">
+						<span class="glyphicon {{$spot->icon_content}}" aria-hidden="true"></span>
+					</div>					
+					<div class="cardDetailDesc">
+						<h3>{{$spot->name}}</h3>
+						<p>
+							{{$spot->desc}}								
+						</p>
+					</div>	
+
+ 				
+ 				@if ($listMiams->contains('spot_id', $spot->spot_id))
+					<div class="miam">
+						<hr />
+						<div class="miamHeader">
+							<span class="glyphicon glyphicon-cutlery"></span><label class=""> Miam Miam :</label>
+							<span class="glyphicon glyphicon-plus  pull-right miamOpen"></span>
+						</div>
+ 						<aside class="row miamList">		
+ 
+		 					@foreach ($listMiams->where('spot_id',$spot->spot_id) as $miam)
+									<div class="col-lg-4 miamDetail">
+										<div class="thumbnail">								      
+										  <div class="miamVisual" style="background-image: url({{$miam->img}})"></div>
+										  <div class="caption">
+										    <h4>{{$miam->name}}</h4>
+										    <p>{{$miam->desc}}</p>
+										    <p> <a href="{{$miam->url}}" class="btn btn-default" role="button" target="_blank">Button</a></p>
+										  </div>
+										</div>
+									</div>
+		 					@endforeach	
+						</aside>
+					</div>		
+				@endif										
+				</li>
+				@endforeach	
+			</ul>
+	</div>
+</section>
 
 
 
-		</ul>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>	
 
+	<script type="text/javascript">
+		$( ".route .miamHeader" ).on( "click", function() {
+			
+			miamCurrent=$(this).parent();
+			miamCurrent.find(".miamList").toggle(400);
+			miamCurrent.find(".miamOpen").toggleClass("glyphicon-minus");	
+		});
 
-	</section>
+		var map;
+		function initMap() {
+			
+		  map = new google.maps.Map(document.getElementById('map'), {
+		    center: {lat: 48.8600299, lng: 2.3495251},
+		    zoom: 18
+		  });
+		}
+		genBottomForRead();
+		$( window ).resize(function() {
+
+			genBottomForRead();
+		});
+
+		function genBottomForRead(){
+			$(".routeContent").css("margin-bottom",($(window).height()-$("#map").height()-$(".routeContent ul li:last-child").height()));
+		}
+
+	</script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHUOo8VLvsHwr7BMa3qxRuzJ3sR3q-1Kc&callback=initMap">
+    </script>
+
 </main>
 @endsection

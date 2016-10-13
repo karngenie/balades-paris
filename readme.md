@@ -36,3 +36,12 @@ https://github.com/karngenie/balades-paris
 
 https://git-for-windows.github.io/
 
+http://nvie.com/posts/a-successful-git-branching-model/
+
+http://ohshitgit.com/
+
+https://github.com/k88hudson/git-flight-rules
+
+https://guides.github.com/activities/hello-world/
+
+https://github.com/tj/git-extras
