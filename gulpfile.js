@@ -18,4 +18,8 @@ elixir(function(mix) {
     //copie les font boostrap
     mix.copy('node_modules/bootstrap-sass/assets/fonts/bootstrap/','public/css/fonts/bootstrap'); 
    	mix.webpack('app.js');
+	mix.scripts([
+		'walk.js',
+	]);
+
 });

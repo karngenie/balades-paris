@@ -47,3 +47,7 @@ https://guides.github.com/activities/hello-world/
 https://github.com/tj/git-extras
 
 http://stackoverflow.com/questions/18412129/how-do-i-update-node-and-npm-on-windows
+
+https://laracasts.com/discuss/channels/vue/fresh-installation-of-laravel-53-elixir-not-working-properly
+
+http://stackoverflow.com/questions/39778765/include-custom-javascript-in-the-app-js
