@@ -17,4 +17,5 @@ elixir(function(mix) {
     mix.sass('app.scss').version('css/app.css');
     //copie les font boostrap
     mix.copy('node_modules/bootstrap-sass/assets/fonts/bootstrap/','public/css/fonts/bootstrap'); 
+   	mix.webpack('app.js');
 });

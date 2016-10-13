@@ -45,3 +45,5 @@ https://github.com/k88hudson/git-flight-rules
 https://guides.github.com/activities/hello-world/
 
 https://github.com/tj/git-extras
+
+http://stackoverflow.com/questions/18412129/how-do-i-update-node-and-npm-on-windows

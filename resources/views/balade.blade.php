@@ -3,13 +3,13 @@
 @section('content')
 	<style>
 
-		html, body { height: 100%; margin: 0; padding: 0; }
-		body{background-color: #fcfcfc; height: 100%; font-family: 'Capriola', sans-serif; }
+		
+		
 
 		#map { height: 100%; }
 		
 		#mapContent{height: 200px;    width: 100%; }
-		.route{
+		.spot{
 			margin-top: 200px
 			/*
 				padding-left: 30px;
@@ -17,13 +17,13 @@
     		*/
 		}
 
-		.routeContent{
+		.spotContent{
 			border-left: solid 2px black;
 			position: relative;
 		}
-		.routeContent ul {list-style-type: none; padding-left: 15px;padding-top: 25px}
-		.routeContent ul, .routeContent li {margin: 0; position: relative; }
-		.routeContent li {
+		.spotContent ul {list-style-type: none; padding-left: 15px;padding-top: 25px}
+		.spotContent ul, .spotContent li {margin: 0; position: relative; }
+		.spotContent li {
 			
 			
 
@@ -51,7 +51,7 @@
 		}
 
 
-		.route p{
+		.spot p{
 			margin: 0;
 			padding:0 15px 0 15px; 
 		}
@@ -139,20 +139,20 @@
 
 
 
-		.routeContent {
+		.spotContent {
 		    border-left: solid 0;
 
 		   
 		}
 				
 
-		.routeContent li {
+		.spotContent li {
 		    margin-left: 0;
 		    margin-top: 55px;
 		}		
 
 
-		.routeContent ul {		    
+		.spotContent ul {		    
 		    padding-left: 0;
 		    padding-top: 0;
 		   
@@ -195,62 +195,61 @@
 	</div>	
 
 
-<section class="route container" style="">
-	<div class="routeContent col-md-7 col-md-offset-2">
-		<div class="timeLineMobile"></div>
-			<ul>
-				@foreach ($listSpots as $spot)
-				
-				<li class="cardDetail">
-					<div class="stepIcon">
-						<span class="glyphicon {{$spot->icon_content}}" aria-hidden="true"></span>
-					</div>					
-					<div class="cardDetailDesc">
-						<h3>{{$spot->name}}</h3>
-						<p>
-							{{$spot->desc}}								
-						</p>
-					</div>	
+	<section class="spot container" style="">
+		<div class="spotContent col-md-7 col-md-offset-2">
+			<div class="timeLineMobile"></div>
+				<ul>
+					@foreach ($listSpots as $spot)
+					
+					<li class="cardDetail">
+						<div class="stepIcon">
+							<span class="glyphicon {{$spot->icon_content}}" aria-hidden="true"></span>
+						</div>					
+						<div class="cardDetailDesc">
+							<h3>{{$spot->name}}</h3>
+							<p>
+								{{$spot->desc}}								
+							</p>
+						</div>	
 
- 				
- 				@if ($listMiams->contains('spot_id', $spot->spot_id))
-					<div class="miam">
-						<hr />
-						<div class="miamHeader">
-							<span class="glyphicon glyphicon-cutlery"></span><label class=""> Miam Miam :</label>
-							<span class="glyphicon glyphicon-plus  pull-right miamOpen"></span>
-						</div>
- 						<aside class="row miamList">		
- 
-		 					@foreach ($listMiams->where('spot_id',$spot->spot_id) as $miam)
-									<div class="col-lg-4 miamDetail">
-										<div class="thumbnail">								      
-										  <div class="miamVisual" style="background-image: url({{$miam->img}})"></div>
-										  <div class="caption">
-										    <h4>{{$miam->name}}</h4>
-										    <p>{{$miam->desc}}</p>
-										    <p> <a href="{{$miam->url}}" class="btn btn-default" role="button" target="_blank">Button</a></p>
-										  </div>
+	 				
+	 				@if ($listMiams->contains('spot_id', $spot->spot_id))
+						<div class="miam">
+							<hr />
+							<div class="miamHeader">
+								<span class="glyphicon glyphicon-cutlery"></span><label class=""> Miam Miam :</label>
+								<span class="glyphicon glyphicon-plus  pull-right miamOpen"></span>
+							</div>
+	 						<aside class="row miamList">		
+	 
+			 					@foreach ($listMiams->where('spot_id',$spot->spot_id) as $miam)
+										<div class="col-lg-4 miamDetail">
+											<div class="thumbnail">								      
+											  <div class="miamVisual" style="background-image: url({{$miam->img}})"></div>
+											  <div class="caption">
+											    <h4>{{$miam->name}}</h4>
+											    <p>{{$miam->desc}}</p>
+											    <p> <a href="{{$miam->url}}" class="btn btn-default" role="button" target="_blank">Button</a></p>
+											  </div>
+											</div>
 										</div>
-									</div>
-		 					@endforeach	
-						</aside>
-					</div>		
-				@endif										
-				</li>
-				@endforeach	
-			</ul>
-	</div>
-</section>
+			 					@endforeach	
+							</aside>
+						</div>		
+					@endif										
+					</li>
+					@endforeach	
+				</ul>
+		</div>
+	</section>
 
 
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>	
+	
 
 	<script type="text/javascript">
-		$( ".route .miamHeader" ).on( "click", function() {
-			
+		$( ".spot .miamHeader" ).on( "click", function() {
+			alert('');
 			miamCurrent=$(this).parent();
 			miamCurrent.find(".miamList").toggle(400);
 			miamCurrent.find(".miamOpen").toggleClass("glyphicon-minus");	
@@ -271,7 +270,7 @@
 		});
 
 		function genBottomForRead(){
-			$(".routeContent").css("margin-bottom",($(window).height()-$("#map").height()-$(".routeContent ul li:last-child").height()));
+			$(".spotContent").css("margin-bottom",($(window).height()-$("#map").height()-$(".spotContent ul li:last-child").height()));
 		}
 
 	</script>
