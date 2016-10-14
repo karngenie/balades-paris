@@ -1,5 +1,8 @@
 @extends('layouts.master')
 
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+
+
 @section('content')
 	<style>
 
@@ -247,10 +250,25 @@
     <!-- Scripts -->
     @include('layouts.loadscript')
 
-    <script src="{{ asset('js/all.js') }}"></script>
+{{--     <script src="{{ asset('js/all.js') }}"></script>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHUOo8VLvsHwr7BMa3qxRuzJ3sR3q-1Kc&callback=initMap">
-    </script>
+    </script> --}}
+
+	<script 
+		src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js">
+	</script>
+	{{-- <link rel="stylesheet" href="awmaker/leaflet.awesome-markers.css"> --}}
+	{{-- <script src="awmaker/leaflet.awesome-markers.js"></script> --}}
+	<script type="text/javascript">
+		var mymap = L.map('map').setView([48.8507815, 2.3969352], 18);
+
+		L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+
+		}).addTo(mymap);		
+
+	</script>
 
 </main>
 @endsection
