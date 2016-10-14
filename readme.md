@@ -32,6 +32,8 @@ https://git-scm.com/book/fr/v2/Les-bases-de-Git-D%C3%A9marrer-un-d%C3%A9p%C3%B4t
 
 http://stackoverflow.com/questions/13340329/how-to-save-a-git-commit-message-from-windows-cmd
 
+https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/
+
 https://github.com/karngenie/balades-paris
 
 https://git-for-windows.github.io/
