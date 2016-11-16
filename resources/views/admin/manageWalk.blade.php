@@ -5,13 +5,16 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
 <div id="mapManage" style="width:400px;height:400px;background-color:red;position:fixed">
-cpououc
+
 </div>
+
 {!! Form::open(['url' => 'admin/balade/']) !!}
 
 
 	<section class="spot container" style="">
 		<div class="spotContent col-md-7 col-md-offset-2">
+				<textarea id="debug" col="25"></textarea>
+				<input type="button" class="genGeojson" value="gen"/>
 
 				<input type="hidden" id="currentSpotEditor">
 				{{ Form::hidden('walkId',$walkId)}}				
@@ -80,19 +83,212 @@ cpououc
 
 @include('layouts.loadscript')
 
+ <link href="{{ asset('css/leaflet.awesome-markers.css') }}" rel="stylesheet">
 
 <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
-<script type="text/javascript">
 
 
-</script>
 
+<script src="{{ asset('js/leaflet.awesome-markers.js') }}"></script>   
 
 <!-- script pour l'editeur -->
 <script src="{{ asset('js/summernote/summernote.min.js') }}"></script>   
 
 <script type="text/javascript">
+
+	var geojsonFeature=
+	{
+	"type": "FeatureCollection",
+	
+	};
+
+
+
+//load geojson 
+var geojsonLoad= {
+	"features": [
+		    {
+		      "type": "Feature",
+		      "properties": {
+		        "idSeg": 1
+		      },
+		      "geometry": {
+		        "type": "LineString",
+		        "coordinates": [
+		          [
+		            2.3993808031082153,
+		            48.85112655835626
+		          ],
+		          [
+		            2.399868965148926,
+		            48.851486605080694
+		          ],
+		          [
+		            2.399836778640747,
+		            48.8515819111332
+		          ]
+		        ]
+		      }
+		    },
+		    {
+		      "type": "Feature",
+		      "properties": {
+		        "idSeg": 2
+		      },
+		      "geometry": {
+		        "type": "LineString",
+		        "coordinates": [
+		          [
+		            2.399836778640747,
+		            48.85158014620794
+		          ],
+		          [
+		            2.399533689022064,
+		            48.85152896334864
+		          ],
+		          [
+		            2.3993673920631404,
+		            48.851906656320175
+		          ],
+		          [
+		            2.400775551795959,
+		            48.85296206363088
+		          ]
+		        ]
+		      }
+		    },
+		    {
+		      "type": "Feature",
+		      "properties": {
+		        "idSeg": "3",
+		      },
+		      "geometry": {
+		        "type": "Point",
+		        "coordinates": [
+		          2.4007728695869446,
+		          48.85295853387763
+		        ]
+		      }
+		    },
+		    {
+		      "type": "Feature",
+		      "properties": {
+		        "idSeg": "4"
+		      },
+		      "geometry": {
+		        "type": "Point",
+		        "coordinates": [
+		          2.4107728695869446,
+		          48.85295853387763
+		        ]
+		      }
+		    }			    
+		  ]
+
+}
+geojsonFeature.features=geojsonLoad.features;
+
+
+
+
+$("#debug").val(JSON.stringify(geojsonFeature));
+
+
+
+		var loadTest=
+		{
+		  "type": "FeatureCollection",
+		  "features": [
+		    {
+		      "type": "Feature",
+		      "properties": {
+		        "idSeg": 1
+		      },
+		      "geometry": {
+		        "type": "LineString",
+		        "coordinates": [
+		          [
+		            2.3993808031082153,
+		            48.85112655835626
+		          ],
+		          [
+		            2.399868965148926,
+		            48.851486605080694
+		          ],
+		          [
+		            2.399836778640747,
+		            48.8515819111332
+		          ]
+		        ]
+		      }
+		    },
+		    {
+		      "type": "Feature",
+		      "properties": {
+		        "idSeg": 2
+		      },
+		      "geometry": {
+		        "type": "LineString",
+		        "coordinates": [
+		          [
+		            2.399836778640747,
+		            48.85158014620794
+		          ],
+		          [
+		            2.399533689022064,
+		            48.85152896334864
+		          ],
+		          [
+		            2.3993673920631404,
+		            48.851906656320175
+		          ],
+		          [
+		            2.400775551795959,
+		            48.85296206363088
+		          ]
+		        ]
+		      }
+		    },
+		    {
+		      "type": "Feature",
+		      "properties": {
+		        "idSeg": "3",
+		      },
+		      "geometry": {
+		        "type": "Point",
+		        "coordinates": [
+		          2.4007728695869446,
+		          48.85295853387763
+		        ]
+		      }
+		    },
+		    {
+		      "type": "Feature",
+		      "properties": {
+		        "idSeg": "4"
+		      },
+		      "geometry": {
+		        "type": "Point",
+		        "coordinates": [
+		          2.4107728695869446,
+		          48.85295853387763
+		        ]
+		      }
+		    }			    
+		  ]
+		}
+
+
+
+
+
+
+
+
+
+
+
 
 	var map  = L.map('mapManage').setView([48.8507815, 2.3969352], 18);
 	var highlighted_feature;
@@ -100,13 +296,23 @@ cpououc
 	L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
 
-	}).addTo(map );		
+	}).addTo(map);		
 
 
+	geojson=L.geoJson(loadTest).addTo(map);
+
+
+
+
+	var redMarker = L.AwesomeMarkers.icon({
+		icon: 'glyphicon-star',
+		markerColor: 'red'
+	}); 
 
 	// FeatureGroup is to store editable layers
-	var drawnItems = new L.FeatureGroup();
-
+	//var drawnItems = new L.FeatureGroup();
+	var drawnItems = geojson;
+	//drawnItems.addLayer(geojson);
 	map.addLayer(drawnItems);
 
 	map.addControl(new L.Control.Draw({
@@ -120,7 +326,10 @@ cpououc
 			polygon : {
 				allowIntersection: false,
 				showArea:true
-			}
+			},
+            marker: {
+                icon:redMarker
+            }			
 		}
 	}));
 
@@ -128,8 +337,12 @@ cpououc
 		var layer = event.layer;
 		let CurrentLayer=$("#currentSpotEditor").val();
 		layer.id=CurrentLayer;
-		console.log(layer);
+		layer.properties={"id":"dsfsd"};
+		
+		//console.log(layer);
 		drawnItems.addLayer(layer);
+
+
 
 		//hightlightCurrent(CurrentLayer);
 
@@ -138,7 +351,7 @@ cpououc
      map.on('draw:edited', function (e) {
          var layers = e.layers;
          layers.eachLayer(function (layer) {
-			 console.log(layer.getLatLng());
+			 //console.log(layer.getLatLng());
              //do whatever you want; most likely save back to db
          });
      });
@@ -158,8 +371,38 @@ cpououc
 			$("#currentSpotEditor").val(temp_spot_id);
 
 			hightlightCurrent(temp_spot_id);
-		
+			
+	
 		});
+
+
+		$(document).on('click', '.genGeojson', function(){
+			
+
+
+
+
+
+			for (var key in drawnItems._layers) {
+				//console.log(drawnItems._layers[key]);
+
+				var json = drawnItems._layers[key].toGeoJSON();
+				//L.extend(json.properties, {"idSeg" : drawnItems._layers[key].id});
+
+				geojsonFeature.features.push(json);	
+				console.log(json);
+			}
+
+			$("#debug").val(JSON.stringify(geojsonFeature));
+			
+				
+
+	
+		});
+
+
+
+
 	});
 
 	function hightlightCurrent(CurrentLayer)
@@ -170,13 +413,31 @@ cpououc
 				highlighted_feature = layer;
 				console.log(layer.id);
 				if (layer.id==CurrentLayer){
-					highlighted_feature.setStyle({
-						weight: 5,
-						color: '#0006ff',
-						fillColor: 'blue',
-						dashArray: '',
-						fillOpacity: 1
-					})
+
+					// si marker
+					if (typeof layer._icon != 'undefined')
+					{
+
+						var redMarker = L.AwesomeMarkers.icon({
+							icon: layer.options.icon.options.icon,
+							markerColor: 'blue'
+						});
+
+						highlighted_feature.setIcon(redMarker);
+
+					}
+					else
+					{
+						// si segment
+						highlighted_feature.setStyle({
+							weight: 5,
+							color: '#0006ff',
+							fillColor: 'blue',
+							dashArray: '',
+							fillOpacity: 1
+						})
+					}
+
 				}
 			}
 		);
@@ -186,15 +447,29 @@ cpououc
 
 		drawnItems.eachLayer(
 			function (layer) {
-				//console.log(layer);
 				highlighted_feature = layer;
-				highlighted_feature.setStyle({
-					weight: 5,
-					color: '#000000',
-					fillColor: 'blue',
-					dashArray: '',
-					fillOpacity: 1
-				})
+				// si marker
+				if (typeof layer._icon != 'undefined')
+				{
+						var redMarker = L.AwesomeMarkers.icon({
+							icon: layer.options.icon.options.icon,
+							markerColor: 'red'
+						});
+						highlighted_feature.setIcon(redMarker);
+
+
+				}		
+				else
+				{				
+					
+					highlighted_feature.setStyle({
+						weight: 5,
+						color: '#000000',
+						fillColor: 'blue',
+						dashArray: '',
+						fillOpacity: 1
+					})
+				}
 			}
 		);
 
