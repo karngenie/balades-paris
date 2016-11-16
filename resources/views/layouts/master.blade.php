@@ -12,7 +12,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Styles -->
+    <link href="{{ asset('js/summernote/summernote.css') }}" rel="stylesheet">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([

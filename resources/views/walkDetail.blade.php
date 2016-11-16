@@ -1,9 +1,10 @@
 @extends('layouts.master')
 
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+
 
 
 @section('content')
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
 	<style>
 
 		
@@ -27,8 +28,6 @@
 		.spotContent ul {list-style-type: none; padding-left: 15px;padding-top: 25px}
 		.spotContent ul, .spotContent li {margin: 0; position: relative; }
 		.spotContent li {
-			
-			
 
 			margin-left: 15px;
 			margin-top: 15px;
@@ -202,8 +201,7 @@
 		<div class="spotContent col-md-7 col-md-offset-2">
 			<div class="timeLineMobile"></div>
 				<ul>
-					@foreach ($listSpots as $spot)
-					
+					@foreach ($listSpots as $spot)					
 					<li class="cardDetail">
 						<div class="stepIcon">
 							<span class="glyphicon {{$spot->icon_content}}" aria-hidden="true"></span>
@@ -250,14 +248,12 @@
     <!-- Scripts -->
     @include('layouts.loadscript')
 
-{{--     <script src="{{ asset('js/all.js') }}"></script>
-    <script async defer
+    <script src="{{ asset('js/all.js') }}"></script>
+{{--     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHUOo8VLvsHwr7BMa3qxRuzJ3sR3q-1Kc&callback=initMap">
-    </script> --}}
+    </script>  --}}
 
-	<script 
-		src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js">
-	</script>
+	<script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
 	{{-- <link rel="stylesheet" href="awmaker/leaflet.awesome-markers.css"> --}}
 	{{-- <script src="awmaker/leaflet.awesome-markers.js"></script> --}}
 	<script type="text/javascript">
