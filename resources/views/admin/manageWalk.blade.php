@@ -111,7 +111,7 @@ var geojsonLoad= {
 		    {
 		      "type": "Feature",
 		      "properties": {
-		        "idSeg": 1
+		        "idFeature": 1
 		      },
 		      "geometry": {
 		        "type": "LineString",
@@ -134,7 +134,7 @@ var geojsonLoad= {
 		    {
 		      "type": "Feature",
 		      "properties": {
-		        "idSeg": 2
+		        "idFeature": 2
 		      },
 		      "geometry": {
 		        "type": "LineString",
@@ -161,7 +161,7 @@ var geojsonLoad= {
 		    {
 		      "type": "Feature",
 		      "properties": {
-		        "idSeg": "3",
+		        "idFeature": "3",
 		      },
 		      "geometry": {
 		        "type": "Point",
@@ -174,7 +174,7 @@ var geojsonLoad= {
 		    {
 		      "type": "Feature",
 		      "properties": {
-		        "idSeg": "4"
+		        "idFeature": "4"
 		      },
 		      "geometry": {
 		        "type": "Point",
@@ -187,6 +187,14 @@ var geojsonLoad= {
 		  ]
 
 }
+
+// si pas de  donnée
+/*
+var geojsonLoad= {
+	"features": [
+			{}]
+}
+*/
 geojsonFeature.features=geojsonLoad.features;
 
 
@@ -196,88 +204,6 @@ $("#debug").val(JSON.stringify(geojsonFeature));
 
 
 
-		var loadTest=
-		{
-		  "type": "FeatureCollection",
-		  "features": [
-		    {
-		      "type": "Feature",
-		      "properties": {
-		        "idSeg": 1
-		      },
-		      "geometry": {
-		        "type": "LineString",
-		        "coordinates": [
-		          [
-		            2.3993808031082153,
-		            48.85112655835626
-		          ],
-		          [
-		            2.399868965148926,
-		            48.851486605080694
-		          ],
-		          [
-		            2.399836778640747,
-		            48.8515819111332
-		          ]
-		        ]
-		      }
-		    },
-		    {
-		      "type": "Feature",
-		      "properties": {
-		        "idSeg": 2
-		      },
-		      "geometry": {
-		        "type": "LineString",
-		        "coordinates": [
-		          [
-		            2.399836778640747,
-		            48.85158014620794
-		          ],
-		          [
-		            2.399533689022064,
-		            48.85152896334864
-		          ],
-		          [
-		            2.3993673920631404,
-		            48.851906656320175
-		          ],
-		          [
-		            2.400775551795959,
-		            48.85296206363088
-		          ]
-		        ]
-		      }
-		    },
-		    {
-		      "type": "Feature",
-		      "properties": {
-		        "idSeg": "3",
-		      },
-		      "geometry": {
-		        "type": "Point",
-		        "coordinates": [
-		          2.4007728695869446,
-		          48.85295853387763
-		        ]
-		      }
-		    },
-		    {
-		      "type": "Feature",
-		      "properties": {
-		        "idSeg": "4"
-		      },
-		      "geometry": {
-		        "type": "Point",
-		        "coordinates": [
-		          2.4107728695869446,
-		          48.85295853387763
-		        ]
-		      }
-		    }			    
-		  ]
-		}
 
 
 
@@ -299,9 +225,13 @@ $("#debug").val(JSON.stringify(geojsonFeature));
 	}).addTo(map);		
 
 
-	geojson=L.geoJson(loadTest).addTo(map);
+	//ajouter les fonction pour les ajout des id
+	//geojson=L.geoJson(geojsonFeature).addTo(map);
 
-
+		geojson=L.geoJson(geojsonFeature, {
+			pointToLayer: pointToLayer,
+			onEachFeature:onEachFeature
+		}).addTo(map);
 
 
 	var redMarker = L.AwesomeMarkers.icon({
@@ -336,8 +266,8 @@ $("#debug").val(JSON.stringify(geojsonFeature));
 	map.on(L.Draw.Event.CREATED, function(event) {
 		var layer = event.layer;
 		let CurrentLayer=$("#currentSpotEditor").val();
-		layer.id=CurrentLayer;
-		layer.properties={"id":"dsfsd"};
+		layer.idFeature=CurrentLayer;
+		
 		
 		//console.log(layer);
 		drawnItems.addLayer(layer);
@@ -377,27 +307,24 @@ $("#debug").val(JSON.stringify(geojsonFeature));
 
 
 		$(document).on('click', '.genGeojson', function(){
-			
 
-
-
-
-
+			var json;
+			geojsonFeature.features=[{}];
 			for (var key in drawnItems._layers) {
 				//console.log(drawnItems._layers[key]);
 
-				var json = drawnItems._layers[key].toGeoJSON();
-				//L.extend(json.properties, {"idSeg" : drawnItems._layers[key].id});
+				json= drawnItems._layers[key].toGeoJSON();
 
-				geojsonFeature.features.push(json);	
+				L.extend(json.properties, {"idFeatureid" : drawnItems._layers[key].idFeature});
+
+
+
+
+				geojsonFeature.features.push(json);
+	
 				console.log(json);
 			}
-
 			$("#debug").val(JSON.stringify(geojsonFeature));
-			
-				
-
-	
 		});
 
 
@@ -411,8 +338,8 @@ $("#debug").val(JSON.stringify(geojsonFeature));
 			function (layer) {
 				//console.log(layer);
 				highlighted_feature = layer;
-				console.log(layer.id);
-				if (layer.id==CurrentLayer){
+				console.log(layer.idFeatureid);
+				if (layer.idFeature==CurrentLayer){
 
 					// si marker
 					if (typeof layer._icon != 'undefined')
@@ -476,5 +403,26 @@ $("#debug").val(JSON.stringify(geojsonFeature));
 	}	
 
 
+	function pointToLayer(feature,latlng){			
+		
+		var redMarker = L.AwesomeMarkers.icon({
+		icon: 'glyphicon-star',
+		markerColor: 'red'
+		});  	
+
+		if (feature['geometry']["type"]=="Point")
+		{		
+			return L.marker(latlng,{icon: redMarker});		
+		}	
+	}
+
+
+	function onEachFeature(feature, layer) {
+		//console.log(feature['properties']["idSeg"]);
+		//console.log(feature.id);
+		layer.idFeature = feature['properties']["idFeature"];
+		
+	}	
+	
 </script> 
 @endsection
