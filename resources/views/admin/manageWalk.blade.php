@@ -7,43 +7,56 @@
 <div id="mapManage" style="width:400px;height:400px;background-color:red;position:fixed">
 
 </div>
-
+<div class="modelBlocWalkEdit hidden">
+	<li class="cardDetail new">
+		@include('admin.blocs.spotEdit',["icon_content" => '',"spot_id"=>"","spot_name"=>"","temp_spot_id"=>"","desc"=>""])
+	</li>
+</div>					
 {!! Form::open(['url' => 'admin/balade/']) !!}
 
 
 	<section class="spot container" style="">
 		<div class="spotContent col-md-7 col-md-offset-2">
-				<textarea id="debug" col="25"></textarea>
-				<input type="button" class="genGeojson" value="gen"/>
+
 
 				<input type="hidden" id="currentSpotEditor">
-				{{ Form::hidden('walkId',$walkId)}}				
-				<ul>
-					<?php $temp_spot_id=0 ?>
+				{{ Form::hidden('walkId',$walkId)}}			
+				<textarea id="debug" col="25" name="geoJsonGenerate"></textarea>
+				<input type="button" class="genGeojson" value="gen"/>
+
+				
+				<ul class="listWalk">
+					<?php $temp_spot_id=1 ?>
 					@foreach ($listSpots as $spot)					
-					<li class="cardDetail">
+					<li class="cardDetail" spot_id={{ $temp_spot_id }}>
 						
+						
+
+
+						@include('admin.blocs.spotEdit',["icon_content" => $spot->icon_content,"spot_id"=>$spot->spot_id,"spot_name"=>$spot->name,"temp_spot_id"=>$temp_spot_id,"desc"=>$spot->desc])
 						<?php $temp_spot_id++ ?>
-						<div class="stepIcon">
+
+
+
+<!--						<div class="stepIcon">
 							<span class="glyphicon {{$spot->icon_content}}" aria-hidden="true"></span>
 						</div>					
 						<div class="cardDetailDesc">
-					
-<!--                                {{ Form::label('name['.$spot->spot_id.']', 'Nom du bloc :', ['class' => 'awesome']) }}
-                                {{ Form::text('name['.$spot->spot_id.']',$spot->name)}}-->
-							
 							{{ Form::hidden('spot_id[]', $spot->spot_id) }}
 
 							{{ Form::label('name_'.$spot->spot_id, 'Nom du bloc :', ['class' => 'awesome']) }}
 							{{ Form::text('name[]',$spot->name,['id'=>'name_'.$spot->spot_id ,  'temp_spot_id' => $temp_spot_id,  'class' => "spotSelector"])}}
 
 							{{ Form::label("desc_".$spot->spot_id, 'Description :', ['class' => 'awesome']) }}
-							{{ Form::textarea('desc[]',$spot->desc,['id'=>'desc_'.$spot->spot_id , 'class' => 'editor']) }}
-											
-							
-						</div>	
+							{{ Form::textarea('desc[]',$spot->desc,['id'=>'desc_'.$spot->spot_id , 'class' => 'editor']) }}							
+						</div>	-->
 
-	 				
+
+
+
+
+<!--                                {{ Form::label('name['.$spot->spot_id.']', 'Nom du bloc :', ['class' => 'awesome']) }}
+                                {{ Form::text('name['.$spot->spot_id.']',$spot->name)}}-->	 				
 <!--	 				@if ($listMiams->contains('spot_id', $spot->spot_id))
 						<div class="miam">
 							<hr />
@@ -72,8 +85,13 @@
 						
 					@endforeach	
 					
-					{{ $temp_spot_id}}
+
 				</ul>
+				
+				<input id="nextId" type="hidden" value="{{ $temp_spot_id}}"></input>
+
+				<input type="button" id="add" value="add"></input>			
+
 				{{ Form::submit('Click Me!') }}
 		</div>
 	</section>	
@@ -102,6 +120,9 @@
 	"type": "FeatureCollection",
 	
 	};
+
+
+
 
 
 
@@ -195,22 +216,12 @@ var geojsonLoad= {
 			{}]
 }
 */
-geojsonFeature.features=geojsonLoad.features;
+	geojsonFeature.features=geojsonLoad.features;
 
 
 
 
-$("#debug").val(JSON.stringify(geojsonFeature));
-
-
-
-
-
-
-
-
-
-
+	$("#debug").val(JSON.stringify(geojsonFeature));
 
 
 
@@ -289,8 +300,8 @@ $("#debug").val(JSON.stringify(geojsonFeature));
 
 	$(document).ready(function() {
 
-		$('.editor').summernote({
-			height:200,
+		$('.listWalk .editor').summernote({
+			height:100,
 		});		
 
 		$(document).on('click', '.spotSelector', function(){
@@ -424,5 +435,33 @@ $("#debug").val(JSON.stringify(geojsonFeature));
 		
 	}	
 	
+
+	//ajout de bloc
+	$(document).on('click', '#add', function(){
+
+			nextId=$("#nextId").val();
+			newElt=$( ".modelBlocWalkEdit li" ).clone().appendTo( ".listWalk" );
+			
+			newElt.attr("spot_id",nextId);
+		
+			newElt.find(".admSpotHiddId").val("new_"+nextId);
+
+			newElt.find(".admSpotLblNameWalk").attr("for",newElt.find(".admSpotLblNameWalk").attr("for")+nextId);
+			newElt.find(".admSpotNameWalk").attr("id",newElt.find(".admSpotLblNameWalk").attr("for"));
+			newElt.find(".admSpotNameWalk").attr("temp_spot_id",nextId);
+
+
+			newElt.find(".admSpotLblDescWalk").attr("for",newElt.find(".admSpotLblDescWalk").attr("for")+nextId);
+			newElt.find(".admSpotDescWalk").attr("id",newElt.find(".admSpotLblDescWalk").attr("for"));
+
+			//prevoit le prochaint id
+			$("#nextId").val(parseInt($("#nextId").val())+1);
+
+
+			newElt.find(".editor").summernote({
+				height:100,
+			});
+	});	
+
 </script> 
 @endsection
